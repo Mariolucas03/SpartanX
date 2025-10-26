@@ -3,8 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GymBook</title>
+  <title>SpartanX</title>
   <style>
+    @font-face {
+      font-family: 'Gear6 Spark';
+      src: url('fonts/Gear6_Spark.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'GreekHouse Symbolized';
+      src: url('fonts/GreekHouse Symbolized_Free.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -12,21 +26,21 @@
     body {
       margin: 0;
       font-family: "Poppins", sans-serif;
-      background-color: #f8f9fa;
-      color: #333;
+      background-color: #000000;
+      color: #E5E5E5;
       overflow-x: hidden;
-      padding-top: 65px; /* espacio para la cabecera fija */
-      padding-bottom: 65px; /* espacio para la barra inferior fija */
+      padding-top: 65px;
+      padding-bottom: 80px;
     }
 
-    /* === CABECERA FIJA === */
     header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background: white;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background: #8B0000;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -39,15 +53,24 @@
       height: 45px;
       border-radius: 50%;
       object-fit: cover;
+      border: 2px solid #CD7F32;
     }
 
     .titulo {
-      font-size: 20px;
-      font-weight: 700;
-      color: #333;
+      font-family: 'Gear6 Spark', sans-serif;
+      font-size: 28px;
+      font-weight: normal;
+      color: white;
       text-decoration: none;
       text-align: center;
       flex: 1;
+    }
+
+    .titulo span {
+      font-family: 'GreekHouse Symbolized', sans-serif;
+      font-size: 32px;
+      letter-spacing: 1px;
+      color: #C9B037;
     }
 
     .perfil {
@@ -55,46 +78,72 @@
       height: 38px;
       border-radius: 50%;
       object-fit: cover;
+      border: 2px solid #CD7F32;
     }
 
-    /* === CONTENIDO CENTRAL === */
     main {
       padding: 20px;
       text-align: center;
+      background-color: #D2B48C;
+      border-radius: 8px;
+      margin: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
 
-    /* === BARRA INFERIOR FIJA === */
+    main h2 {
+      color: #8B0000;
+    }
+
+    main p {
+      color: #1C1C1C;
+    }
+
     nav {
       position: fixed;
-      bottom: 0;
+      bottom: 10px;
       left: 0;
       width: 100%;
-      background: white;
-      border-top: 1px solid #ddd;
+      background: transparent;
       display: flex;
       justify-content: space-around;
-      padding: 10px 0;
+      padding: 0;
       z-index: 1000;
     }
 
     nav button {
-      background: none;
+      flex: 1;
+      margin: 0 8px;
+      background-color: #8B0000;
       border: none;
       font-size: 14px;
-      font-weight: 500;
-      color: #667eea;
+      font-weight: 600;
+      color: white;
+      padding: 12px 0;
+      border-radius: 14px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
       cursor: pointer;
-      transition: transform 0.2s ease, color 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     nav button:hover {
-      transform: scale(1.1);
-      color: #5563de;
+      transform: translateY(-2px);
+      background-color: #5A0000;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     }
 
     @media (max-width: 480px) {
       .titulo {
-        font-size: 18px;
+        font-size: 22px;
+      }
+
+      .titulo span {
+        font-size: 26px;
+      }
+
+      nav button {
+        font-size: 12px;
+        padding: 10px 0;
+        margin: 0 4px;
       }
     }
   </style>
@@ -104,17 +153,24 @@
   <!-- 🔝 CABECERA -->
   <header>
     <a href="index.html"><img src="logo.png" alt="Logo" class="logo"></a>
-    <a href="index.html" class="titulo">GymBook</a>
+    <a href="index.html" class="titulo"><span>SpartanX</span></a>
     <a href="perfil.html"><img src="perfil.png" alt="Perfil" class="perfil"></a>
   </header>
 
-  <!-- 📄 CONTENIDO PRINCIPAL -->
-  <main>
-    <h2>Contenido de la sección</h2>
-    <p>Aquí irá el contenido específico de esta página.</p>
-  </main>
+  <!-- 📄 CUADROS DE CONTENIDO -->
+  <main><h2>Contenido de la sección 1</h2><p>Aquí irá el contenido específico de esta sección.</p></main>
+  <main><h2>Contenido de la sección 2</h2><p>Aquí irá el contenido específico de esta sección.</p></main>
+  <main><h2>Contenido de la sección 3</h2><p>Aquí irá el contenido específico de esta sección.</p></main>
+  <main><h2>Contenido de la sección 4</h2><p>Aquí irá el contenido específico de esta sección.</p></main>
+  <main><h2>Contenido de la sección 5</h2><p>Aquí irá el contenido específico de esta sección.</p></main>
+  <main><h2>Contenido de la sección 6</h2><p>Aquí irá el contenido específico de esta sección.</p></main>
+  <main><h2>Contenido de la sección 7</h2><p>Aquí irá el contenido específico de esta sección.</p></main>
+  <main><h2>Contenido de la sección 8</h2><p>Aquí irá el contenido específico de esta sección.</p></main>
+  <main><h2>Contenido de la sección 9</h2><p>Aquí irá el contenido específico de esta sección.</p></main>
+  <main><h2>Contenido de la sección 10</h2><p>Aquí irá el contenido específico de esta sección.</p></main>
+  <main><h2>Contenido de la sección 11</h2><p>Aquí irá el contenido específico de esta sección.</p></main>
 
-  <!-- 🔘 BARRA INFERIOR -->
+  <!-- 🔘 BOTONES FLOTANTES -->
   <nav>
     <button onclick="location.href='rutina.html'">Rutina</button>
     <button onclick="location.href='comida.html'">Comida</button>
