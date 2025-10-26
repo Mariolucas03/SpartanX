@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GymBook</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #f3f4f6;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* === FUENTE GYMNASTIK === */
+    @font-face {
+      font-family: "Gymnastik";
+      src: url("Gymnastik.otf") format("opentype");
+    }
+
+    /* === CABECERA === */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px;
+      z-index: 1000;
+    }
+
+    .logo {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .titulo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #333;
+      text-decoration: none;
+      text-align: center;
+      flex: 1;
+    }
+
+    .perfil {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* === SECCIÓN FRASE === */
+    .hero {
+      height: 100vh;
+      background: #000;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+      transition: transform 1s ease, opacity 1s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .frase {
+      font-family: "Gymnastik", sans-serif;
+      font-size: 2rem;
+      padding: 0 20px;
+      line-height: 1.4;
+    }
+
+    /* Animación al deslizar */
+    .hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    /* === SECCIÓN RESUMEN === */
+    .resumen {
+      height: 100vh;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+      z-index: 0;
+    }
+
+    .resumen h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    /* === BARRA INFERIOR === */
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 1000;
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      color: #667eea;
+      cursor: pointer;
+      transition: transform 0.2s ease, color 0.3s ease;
+    }
+
+    nav button:hover {
+      transform: scale(1.1);
+      color: #5563de;
+    }
+
+    @media (max-width: 480px) {
+      .frase {
+        font-size: 1.6rem;
+      }
+      .titulo {
+        font-size: 18px;
+      }
+      .resumen h2 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔝 CABECERA -->
+  <header>
+    <a href="index.html"><img src="logo.png" alt="Logo" class="logo"></a>
+    <a href="index.html" class="titulo">GymBook</a>
+    <a href="perfil.html"><img src="perfil.png" alt="Perfil" class="perfil"></a>
+  </header>
+
+  <!-- 💬 SECCIÓN FRASE -->
+  <section class="hero" id="hero">
+    <p class="frase" id="fraseMotivacional"></p>
+  </section>
+
+  <!-- 📋 SECCIÓN RESUMEN -->
+  <section class="resumen" id="resumen">
+    <h2>RESUMEN DEL DÍA:</h2>
+  </section>
+
+  <!-- 🔘 BARRA INFERIOR -->
+  <nav>
+    <button onclick="location.href='rutina.html'">Rutina</button>
+    <button onclick="location.href='comida.html'">Comida</button>
+    <button onclick="location.href='ejercicios.html'">Ejercicios</button>
+    <button onclick="location.href='datos.html'">Datos</button>
+  </nav>
+
+  <script>
+    // 🕒 Frases motivacionales
+    const frases = [
+      "Cada paso cuenta, no te rindas.",
+      "Tu esfuerzo de hoy será tu orgullo de mañana.",
+      "La disciplina vence al talento.",
+      "Cree en ti, incluso cuando nadie más lo haga.",
+      "El cambio empieza cuando tú decides.",
+      "El dolor es temporal, el logro es eterno.",
+      "Hoy es un buen día para mejorar."
+    ];
+
+    const fraseEl = document.getElementById("fraseMotivacional");
+    const hero = document.getElementById("hero");
+
+    function actualizarFrase() {
+      const hoy = new Date();
+      const dia = hoy.getDay();
+      fraseEl.textContent = frases[dia];
+    }
+
+    actualizarFrase();
+
+    // Cambio automático a las 12:00 PM
+    function programarCambio() {
+      const ahora = new Date();
+      const siguienteCambio = new Date();
+      siguienteCambio.setHours(12, 0, 0, 0);
+
+      if (ahora > siguienteCambio) {
+        siguienteCambio.setDate(siguienteCambio.getDate() + 1);
+      }
+
+      const tiempoRestante = siguienteCambio - ahora;
+      setTimeout(() => {
+        actualizarFrase();
+        programarCambio();
+      }, tiempoRestante);
+    }
+
+    programarCambio();
+
+    // 🎞️ Efecto al deslizar
+    window.addEventListener("scroll", () => {
+      const scrollY = window.scrollY;
+      if (scrollY > window.innerHeight / 3) {
+        hero.classList.add("hidden");
+      } else {
+        hero.classList.remove("hidden");
+      }
+    });
+  </script>
+
+</body>
+</html>
