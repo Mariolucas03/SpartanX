@@ -1,110 +1,624 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inicio - SpartanX</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GymBook Pro (Prototype)</title>
+
+  <!-- Chart.js (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background-color: #000;
-      color: #fff;
-      padding-top: 65px;
-      padding-bottom: 65px;
+    /* Basic mobile-first styles */
+    :root{
+      --accent:#667eea;
+      --bg:#f6f7fb;
+      --card:#fff;
+      --muted:#6b7280;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:#111;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
 
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: #8B0000;
-      color: white;
-      display: flex;
-      align-items: center;
-      padding: 10px 15px;
-      z-index: 1000;
+    /* Fixed header / footer template */
+    header{
+      position:fixed; top:0; left:0; right:0;
+      height:60px; display:flex; align-items:center; justify-content:space-between;
+      padding:8px 14px; background:rgba(255,255,255,0.98);
+      box-shadow:0 1px 8px rgba(16,24,40,0.06); z-index:1000;
+    }
+    .logo-row{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit}
+    .logo-img{width:44px; height:44px; border-radius:50%; object-fit:cover}
+    .title{font-weight:700; font-size:18px; text-align:center; flex:1}
+    .profile-btn{width:40px; height:40px; border-radius:50%; overflow:hidden}
+
+    main.app{
+      padding-top:72px; padding-bottom:78px; min-height:100vh;
     }
 
-    header a {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      color: inherit;
-    }
+    /* Cards & lists */
+    .container{max-width:980px; margin:0 auto; padding:16px;}
+    .card{background:var(--card); border-radius:14px; padding:14px; box-shadow:0 6px 14px rgba(15,23,42,0.04); margin-bottom:12px}
+    h2{margin:0 0 10px 0; font-size:18px}
 
-    .logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin-right: 10px;
+    /* Bottom nav */
+    nav.bottom{
+      position:fixed; left:0; right:0; bottom:0; height:64px; background: #fff;
+      display:flex; justify-content:space-around; align-items:center; z-index:1000;
+      border-top:1px solid #e6e9f2;
     }
+    nav.bottom button{background:none;border:none;color:var(--accent);font-weight:600; font-size:13px; padding:8px}
 
-    .titulo {
-      font-size: 24px;
-      margin: 0;
+    /* Forms */
+    label{display:block;font-size:13px;color:var(--muted); margin-bottom:6px}
+    input[type="text"], input[type="number"], textarea, select{
+      width:100%; padding:10px 12px; border-radius:10px; border:1px solid #e6e9f2; background:#fff; font-size:14px;
     }
+    .row{display:flex; gap:10px}
+    .col{flex:1}
 
-    main {
-      padding: 20px;
-      text-align: center;
+    .small{font-size:13px;color:var(--muted)}
+
+    /* Buttons */
+    .btn{
+      background:var(--accent); color:white; padding:10px 14px; border-radius:10px; border:none; cursor:pointer;
+      font-weight:700; display:inline-block;
     }
+    .btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(102,126,234,0.12)}
 
-    nav {
-      position: fixed;
-      bottom: 10px;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      background: transparent;
-      z-index: 1000;
-    }
+    /* Routine list */
+    .routine-item{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px; border-radius:10px; cursor:pointer; transition:background .12s}
+    .routine-item:hover{background:#f1f5ff}
+    .muted{color:var(--muted)}
 
-    nav a {
-      flex: 1;
-      margin: 0 8px;
-      background-color: #8B0000;
-      color: white;
-      text-align: center;
-      padding: 12px 0;
-      border-radius: 14px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-      transition: all 0.3s ease;
-    }
-
-    nav a:hover {
-      background-color: #5A0000;
-      transform: translateY(-2px);
+    /* Responsive tweaks */
+    @media(min-width:720px){
+      body{font-size:16px}
+      .container{padding:24px}
     }
   </style>
 </head>
 <body>
 
-  <!-- 🔝 CABECERA -->
+  <!-- Header (shared template) -->
   <header>
-    <a href="homepage.html">
-      <img src="logo.png" alt="Logo" class="logo" />
-      <h1 class="titulo">SpartanX</h1>
+    <a href="index.html" class="logo-row" id="logo-link">
+      <img src="Generated Image October 26, 2025 - 11_30AM.png" alt="logo" class="logo-img" onerror="this.style.display='none'">
+    </a>
+
+    <a href="index.html" class="title">GymBook</a>
+
+    <a href="perfil.html" class="profile-btn">
+      <img src="Generated Image October 26, 2025 - 11_23AM.png" alt="perfil" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">
     </a>
   </header>
 
-  <!-- 📄 CONTENIDO -->
-  <main>
-    <h2>Bienvenido a tu espacio de entrenamiento</h2>
-    <p>Selecciona una sección desde la barra inferior.</p>
+  <!-- Main SPA area -->
+  <main class="app" id="app">
+    <div class="container" id="view-root">
+      <!-- Content injected by JS -->
+    </div>
   </main>
 
-  <!-- 🔘 BARRA INFERIOR -->
-  <nav>
-    <a href="rutina.html">Rutina</a>
-    <a href="comida.html">Comida</a>
-    <a href="ejercicios.html">Ejercicios</a>
-    <a href="historial.html">Historial</a>
+  <!-- Bottom nav (shared template) -->
+  <nav class="bottom">
+    <button data-route="home">Inicio</button>
+    <button data-route="rutinas">Rutina</button>
+    <button data-route="registro">Registrar</button>
+    <button data-route="progreso">Progreso</button>
   </nav>
 
+<script>
+/*
+  GymBook Pro - Prototype SPA
+  - Single-file app using localStorage
+  - Routes: home, rutinas, registro, progreso, perfil
+*/
+
+const STORAGE_KEY = 'gymbook_data_v1';
+
+// Default demo data
+const defaultData = {
+  users: [
+    { username: 'Mario', password: '1234' }
+  ],
+  currentUser: null,
+  routines: [],
+  sessions: []
+};
+
+// util
+function uid(prefix='id'){ return prefix + Math.random().toString(36).slice(2,9); }
+function load(){ const raw=localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(defaultData)); }
+function save(data){ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+let store = load();
+
+// Simple router
+const routes = {
+  home: renderHome,
+  rutinas: renderRutinas,
+  registro: renderRegistro,
+  progreso: renderProgreso,
+  perfil: renderPerfil,
+  login: renderLogin
+};
+
+// init
+document.addEventListener('DOMContentLoaded', ()=> {
+  attachNav();
+  // if no user logged -> show login
+  if(!store.currentUser) {
+    navigate('login');
+  } else {
+    navigate('home');
+  }
+});
+
+function attachNav(){
+  document.querySelectorAll('nav.bottom button').forEach(btn=>{
+    btn.onclick = ()=> navigate(btn.getAttribute('data-route'));
+  });
+  // logo click -> home
+  document.getElementById('logo-link').onclick = (e)=> { e.preventDefault(); navigate('home'); }
+}
+
+/* ---------- NAV ---------- */
+function navigate(route){
+  const view = document.getElementById('view-root');
+  view.innerHTML = '';
+  const fn = routes[route] || (()=> view.innerHTML = '<div class="card"><h2>404</h2></div>');
+  fn(view);
+}
+
+/* ---------- VIEWS ---------- */
+
+// --- Reemplaza TODO desde aquí hasta antes de "function renderHome(...)" ---
+
+document.addEventListener('DOMContentLoaded', ()=> {
+  attachNav();
+  // Carga inicial
+  if(!store.currentUser) {
+    navigate('login');
+  } else {
+    navigate('home');
+  }
+});
+
+function renderLogin(container){
+  container.innerHTML = `
+    <div class="card">
+      <h2>Iniciar sesión</h2>
+      <p class="small">Usa el usuario de prueba <strong>Mario</strong> / <strong>1234</strong> o crea uno nuevo.</p>
+
+      <div style="margin-top:12px">
+        <label>Usuario</label>
+        <input id="login-user" type="text" placeholder="Usuario" />
+      </div>
+      <div style="margin-top:10px">
+        <label>Contraseña</label>
+        <input id="login-pass" type="password" placeholder="Contraseña" />
+      </div>
+
+      <div style="margin-top:16px; display:flex; gap:10px">
+        <button class="btn" id="login-btn">Entrar</button>
+        <button class="btn ghost" id="register-btn">Crear cuenta</button>
+      </div>
+      <p class="small" id="login-msg" style="margin-top:8px;color:#dc2626;"></p>
+    </div>
+  `;
+
+  const msg = document.getElementById('login-msg');
+
+  document.getElementById('login-btn').onclick = ()=>{
+    const u = document.getElementById('login-user').value.trim();
+    const p = document.getElementById('login-pass').value;
+    const found = store.users.find(x=> x.username === u && x.password === p);
+    if(found){
+      store.currentUser = found.username;
+      save(store);
+      msg.textContent = 'Acceso correcto, redirigiendo...';
+      setTimeout(()=> navigate('home'), 500);
+    } else {
+      msg.textContent = 'Usuario o contraseña incorrectos.';
+    }
+  };
+
+  document.getElementById('register-btn').onclick = ()=>{
+    const u = document.getElementById('login-user').value.trim();
+    const p = document.getElementById('login-pass').value;
+    if(!u || !p){
+      msg.textContent = 'Debes introducir usuario y contraseña.';
+      return;
+    }
+    if(store.users.find(x=>x.username===u)){
+      msg.textContent = 'El usuario ya existe.';
+      return;
+    }
+    store.users.push({username:u,password:p});
+    store.currentUser = u;
+    save(store);
+    msg.style.color = '#16a34a';
+    msg.textContent = 'Cuenta creada correctamente. Redirigiendo...';
+    setTimeout(()=> navigate('home'), 700);
+  };
+}
+
+
+function renderHome(container){
+  container.innerHTML = `
+    <div class="card">
+      <h2>Bienvenido, ${store.currentUser}</h2>
+      <p class="small">Resumen rápido de tus últimas sesiones</p>
+      <div id="recent-sessions"></div>
+    </div>
+
+    <div class="card">
+      <h2>Rutinas destacadas</h2>
+      <div id="routine-list"></div>
+      <div style="margin-top:10px"><button class="btn" id="new-routine">Crear nueva rutina</button></div>
+    </div>
+  `;
+  renderRoutineList('#routine-list');
+  renderRecentSessions();
+  document.getElementById('new-routine').onclick = ()=> {
+    const name = prompt('Nombre de la rutina') || 'Nueva rutina';
+    const r = {id:uid('r'), name, exercises:[]};
+    store.routines.push(r); save(store);
+    navigate('rutinas');
+  }
+}
+
+function renderRutinas(container){
+  container.innerHTML = `
+    <div class="card">
+      <h2>Mis Rutinas</h2>
+      <div id="rut-list"></div>
+    </div>
+    <div class="card">
+      <h2>Crear / Editar rutina</h2>
+      <div style="margin-bottom:8px">
+        <label>Seleccionar rutina</label>
+        <select id="rut-select"></select>
+      </div>
+      <div style="margin-bottom:8px">
+        <label>Nombre</label>
+        <input id="rut-name" type="text" placeholder="Nombre rutina">
+      </div>
+      <div style="margin-bottom:8px">
+        <label>Ejercicio</label>
+        <div class="row">
+          <input id="ej-name" class="col" type="text" placeholder="Nombre ejercicio">
+          <input id="ej-sets" style="width:110px" type="number" placeholder="Sets" min="1" value="3">
+        </div>
+        <div style="margin-top:8px">
+          <input id="ej-reps" type="number" placeholder="Reps" min="1" value="8">
+          <button class="btn ghost" id="add-ej" style="margin-left:8px">Agregar</button>
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        <button class="btn" id="save-rut">Guardar rutina</button>
+        <button class="btn ghost" id="del-rut">Eliminar rutina</button>
+      </div>
+    </div>
+  `;
+  const sel = document.getElementById('rut-select');
+  function refreshSel(){
+    sel.innerHTML = '';
+    store.routines.forEach(r=>{
+      const o = document.createElement('option'); o.value=r.id; o.textContent=r.name; sel.appendChild(o);
+    });
+    if(store.routines.length) loadRut(store.routines[0].id);
+    renderRoutineList('#rut-list');
+  }
+  function loadRut(id){
+    const r = store.routines.find(x=>x.id===id);
+    document.getElementById('rut-name').value = r.name;
+    // render exercises
+    const list = document.createElement('div');
+    list.innerHTML = '';
+    r.exercises.forEach(e=>{
+      const el = document.createElement('div');
+      el.className='routine-item';
+      el.innerHTML = `<div><strong>${e.name}</strong><div class="small">${e.sets} sets • ${e.reps} reps</div></div>
+                      <div><button class="btn ghost" data-eid="${e.id}">Eliminar</button></div>`;
+      list.appendChild(el);
+    });
+    // replace existing list area
+    const parent = document.getElementById('rut-list');
+    parent.innerHTML=''; parent.appendChild(list);
+
+    // attach delete exercise
+    list.querySelectorAll('button[data-eid]').forEach(b=>{
+      b.onclick = ()=> {
+        const eid = b.getAttribute('data-eid');
+        r.exercises = r.exercises.filter(x=>x.id!==eid); save(store); loadRut(id); renderRoutineList('#rut-list');
+      }
+    });
+  }
+
+  sel.onchange = ()=> loadRut(sel.value);
+  document.getElementById('add-ej').onclick = ()=>{
+    const name = document.getElementById('ej-name').value.trim();
+    const sets = parseInt(document.getElementById('ej-sets').value) || 3;
+    const reps = parseInt(document.getElementById('ej-reps').value) || 8;
+    if(!name){ alert('Nombre ejercicio requerido'); return; }
+    const r = store.routines.find(x=>x.id===sel.value);
+    const e = { id: uid('e'), name, sets, reps};
+    r.exercises.push(e); save(store); loadRut(r.id); renderRoutineList('#rut-list');
+    document.getElementById('ej-name').value='';
+  };
+
+  document.getElementById('save-rut').onclick = ()=>{
+    const id = sel.value;
+    const r = store.routines.find(x=>x.id===id);
+    r.name = document.getElementById('rut-name').value.trim() || r.name;
+    save(store); refreshSel();
+    alert('Rutina guardada');
+  };
+  document.getElementById('del-rut').onclick = ()=>{
+    if(!confirm('Eliminar rutina?')) return;
+    const id = sel.value;
+    store.routines = store.routines.filter(x=>x.id!==id);
+    save(store); renderRutinas(container);
+  };
+
+  refreshSel();
+}
+
+function renderRegistro(container){
+  // UI to pick routine and log a session
+  container.innerHTML = `
+    <div class="card">
+      <h2>Registrar sesión</h2>
+      <div style="margin-bottom:10px">
+        <label>Elegir rutina</label>
+        <select id="reg-rut"></select>
+      </div>
+      <div id="reg-exercises"></div>
+      <div style="margin-top:10px">
+        <button class="btn" id="save-session">Guardar sesión</button>
+      </div>
+    </div>
+  `;
+  const sel = document.getElementById('reg-rut');
+  store.routines.forEach(r=>{
+    const o = document.createElement('option'); o.value=r.id; o.textContent=r.name; sel.appendChild(o);
+  });
+  function loadExercises(){
+    const rid = sel.value;
+    const r = store.routines.find(x=>x.id===rid);
+    const container = document.getElementById('reg-exercises');
+    container.innerHTML = '';
+    r.exercises.forEach(e=>{
+      const wrap = document.createElement('div');
+      wrap.className='card';
+      wrap.innerHTML = `<h3 style="margin:0 0 8px 0">${e.name}</h3>
+        <div class="row">
+          <div class="col"><label>Sets</label><input class="inp-sets" type="number" value="${e.sets}"></div>
+          <div class="col"><label>Reps</label><input class="inp-reps" type="number" value="${e.reps}"></div>
+        </div>
+        <div style="margin-top:8px">
+          <label>Peso (kg) por set, separado por comas</label>
+          <input class="inp-weights" type="text" placeholder="e.g. 20,20,20">
+        </div>
+      `;
+      container.appendChild(wrap);
+    });
+  }
+  sel.onchange = loadExercises;
+  if(sel.options.length) loadExercises();
+
+  document.getElementById('save-session').onclick = ()=>{
+    const rid = sel.value;
+    const r = store.routines.find(x=>x.id===rid);
+    const cards = document.querySelectorAll('#reg-exercises .card');
+    const logs = [];
+    for(let i=0;i<cards.length;i++){
+      const name = cards[i].querySelector('h3').textContent;
+      const sets = parseInt(cards[i].querySelector('.inp-sets').value) || 0;
+      const reps = parseInt(cards[i].querySelector('.inp-reps').value) || 0;
+      const weightsText = cards[i].querySelector('.inp-weights').value.trim();
+      const weights = weightsText ? weightsText.split(',').map(s=>parseFloat(s)||0) : [];
+      logs.push({ name, sets, reps, weights });
+    }
+    const session = { id: uid('s'), dateISO: new Date().toISOString(), routineId: rid, logs };
+    store.sessions.push(session); save(store);
+    alert('Sesión guardada');
+    navigate('progreso');
+  };
+}
+
+function renderProgreso(container){
+  container.innerHTML = `
+    <div class="card">
+      <h2>Progreso</h2>
+      <p class="small">Evolución de peso por ejercicio (últimas sesiones)</p>
+      <canvas id="chart" style="width:100%;height:240px"></canvas>
+    </div>
+    <div class="card">
+      <h2>Historial</h2>
+      <div id="hist-list"></div>
+    </div>
+  `;
+  renderHistoryList();
+  renderChart();
+}
+
+function renderPerfil(container){
+  container.innerHTML = `
+    <div class="card">
+      <h2>Perfil</h2>
+      <p class="small">Usuario: ${store.currentUser}</p>
+      <div style="margin-top:8px">
+        <button class="btn" id="logout">Cerrar sesión</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('logout').onclick = ()=>{
+    store.currentUser = null; save(store); navigate('login');
+  }
+}
+
+/* ---------- helpers for views ---------- */
+
+function renderRoutineList(selector){
+  const parent = document.querySelector(selector);
+  parent.innerHTML = '';
+  if(!store.routines.length) parent.innerHTML = '<div class="small muted">No hay rutinas</div>';
+  store.routines.forEach(r=>{
+    const div = document.createElement('div');
+    div.className='routine-item card';
+    div.innerHTML = `<div>
+        <strong>${r.name}</strong>
+        <div class="small muted">${r.exercises.length} ejercicios</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn ghost" data-edit="${r.id}">Editar</button>
+        <button class="btn" data-start="${r.id}">Entrenar</button>
+      </div>`;
+    parent.appendChild(div);
+  });
+  // attach events
+  parent.querySelectorAll('button[data-edit]').forEach(b=>{
+    b.onclick = ()=> { navigate('rutinas'); setTimeout(()=> {
+      // preselect
+      const id = b.getAttribute('data-edit');
+      const sel = document.querySelector('#rut-select');
+      if(sel){ sel.value = id; sel.dispatchEvent(new Event('change')); }
+    }, 150) };
+  });
+  parent.querySelectorAll('button[data-start]').forEach(b=>{
+    b.onclick = ()=> { 
+      const id = b.getAttribute('data-start');
+      // create quick session preloaded with routine -> open registro with selection
+      navigate('registro');
+      setTimeout(()=> {
+        const sel = document.getElementById('reg-rut');
+        if(sel){ sel.value = id; sel.dispatchEvent(new Event('change')); window.scrollTo({top:0,behavior:'smooth'}); }
+      },150);
+    };
+  });
+}
+
+function renderRecentSessions(){
+  const node = document.getElementById('recent-sessions');
+  if(!node) return;
+  node.innerHTML = '';
+  const last = store.sessions.slice(-5).reverse();
+  if(!last.length){ node.innerHTML = '<div class="small muted">No hay sesiones registradas</div>'; return; }
+  last.forEach(s=>{
+    const r = store.routines.find(x=>x.id===s.routineId) || {name:'Rutina eliminada'};
+    const d = new Date(s.dateISO).toLocaleString();
+    const el = document.createElement('div'); el.className='card';
+    el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
+      <div><strong>${r.name}</strong><div class="small muted">${d}</div></div>
+      <div><button class="btn ghost" data-view="${s.id}">Ver</button></div>
+    </div>`;
+    node.appendChild(el);
+  });
+  node.querySelectorAll('button[data-view]').forEach(b=>{
+    b.onclick = ()=> {
+      const id = b.getAttribute('data-view');
+      const s = store.sessions.find(x=>x.id===id);
+      alert(JSON.stringify(s, null, 2));
+    }
+  });
+}
+
+function renderHistoryList(){
+  const list = document.getElementById('hist-list');
+  list.innerHTML = '';
+  if(!store.sessions.length){ list.innerHTML = '<div class="small muted">No hay historial</div>'; return; }
+  const sorted = store.sessions.slice().sort((a,b)=> new Date(b.dateISO)-new Date(a.dateISO));
+  sorted.forEach(s=>{
+    const r = store.routines.find(x=>x.id===s.routineId) || {name:'(rutina) '};
+    const d = new Date(s.dateISO).toLocaleString();
+    const el = document.createElement('div'); el.className='card';
+    el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
+      <div><strong>${r.name}</strong><div class="small muted">${d}</div></div>
+      <div><button class="btn ghost" data-view="${s.id}">Detalles</button></div>
+    </div>`;
+    list.appendChild(el);
+  });
+  list.querySelectorAll('button[data-view]').forEach(b=>{
+    b.onclick = ()=> {
+      const id = b.getAttribute('data-view');
+      const s = store.sessions.find(x=>x.id===id);
+      const pretty = s.logs.map(l=> `${l.name} - sets:${l.sets}, reps:${l.reps}, pesos:[${l.weights.join(',')}]`).join('\n');
+      alert(`Sesión: ${new Date(s.dateISO).toLocaleString()}\n\n${pretty}`);
+    }
+  });
+}
+
+function renderChart(){
+  // Build a simple dataset: pick most-used exercise by name and show latest weight values across sessions
+  const allWeightsByExercise = {}; // name -> [{date,val},...]
+  store.sessions.forEach(s=>{
+    s.logs.forEach(l=>{
+      const name = l.name;
+      const maxWeight = l.weights.length ? Math.max(...l.weights) : null;
+      if(maxWeight != null){
+        if(!allWeightsByExercise[name]) allWeightsByExercise[name]=[];
+        allWeightsByExercise[name].push({date:new Date(s.dateISO), val:maxWeight});
+      }
+    });
+  });
+  const ctx = document.getElementById('chart').getContext('2d');
+  // choose up to 3 exercises
+  const labels = []; const datasets=[];
+  const exNames = Object.keys(allWeightsByExercise).slice(0,3);
+  if(exNames.length===0){
+    // no data
+    ctx.canvas.parentElement.innerHTML = '<div class="small muted">No hay datos de peso para mostrar. Registra sesiones con pesos.</div>';
+    return;
+  }
+  exNames.forEach((name, idx)=>{
+    const arr = allWeightsByExercise[name].sort((a,b)=> a.date - b.date);
+    const lab = arr.map(x=> x.date.toLocaleDateString());
+    // merge labels
+    lab.forEach(d=> { if(!labels.includes(d)) labels.push(d); });
+  });
+  labels.sort((a,b)=> new Date(a)-new Date(b));
+  exNames.forEach((name, idx)=>{
+    const arr = allWeightsByExercise[name].sort((a,b)=> a.date - b.date);
+    const map = {}; arr.forEach(x=> map[x.date.toLocaleDateString()] = x.val);
+    const data = labels.map(l=> map[l] || null);
+    datasets.push({
+      label: name,
+      data,
+      fill:false,
+      borderColor: ['#3b82f6','#06b6d4','#ef4444'][idx%3],
+      tension:0.2,
+      spanGaps:true
+    });
+  });
+
+  // destroy existing chart if any
+  if(window._gymChart) window._gymChart.destroy();
+  window._gymChart = new Chart(ctx, {
+    type:'line',
+    data: { labels, datasets },
+    options: {
+      responsive:true,
+      plugins: { legend:{ position:'bottom' } },
+      scales: {
+        y:{ beginAtZero:true }
+      }
+    }
+  });
+}
+
+/* ---------- End SPA ---------- */
+
+/* Expose navigate for debugging */
+window.navigate = navigate;
+</script>
 </body>
 </html>

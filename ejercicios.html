@@ -222,13 +222,18 @@
     }
 
     function asignarEjercicioARutina(rutinaId, ejercicio) {
+      if (!ejercicio || !ejercicio.nombre || !ejercicio.descripcion) {
+        console.error("Ejercicio mal definido:", ejercicio);
+        return;
+      }
+
       db.collection("rutinas").doc(rutinaId).update({
         ejercicios: firebase.firestore.FieldValue.arrayUnion({
           nombre: ejercicio.nombre,
           descripcion: ejercicio.descripcion
         })
       }).then(() => {
-        alert(`Ejercicio "${ejercicio.nombre}" añadido a la rutina`);
+        console.log(`Ejercicio "${ejercicio.nombre}" añadido a la rutina`);
       }).catch((error) => {
         console.error("Error al asignar ejercicio:", error);
       });
@@ -289,18 +294,13 @@
 
       const btnCrear = document.createElement("button");
       btnCrear.textContent = "Añadir rutina";
-      btnCrear.onclick = async () => {
-        const nombre = input.value.trim();
-        if (nombre) {
-          const nuevaId = await crearRutina(nombre);
-          const option = document.createElement("option");
+               const option = document.createElement("option");
           option.value = nuevaId;
-          option.textContent =          option.textContent = nombre;
+          option.textContent = nombre;
           select.appendChild(option);
           select.value = nuevaId;
           input.value = "";
-        }
-      };
+        };
 
       const btnAsignar = document.createElement("button");
       btnAsignar.textContent = "Asignar a rutina";
@@ -324,7 +324,7 @@
       if (anterior) anterior.remove();
 
       ejercicioDiv.appendChild(menu);
-    }
+    
   </script>
 </body>
 </html>
