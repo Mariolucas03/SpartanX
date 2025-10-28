@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - SpartanX</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #C9B037;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    input {
+      margin-bottom: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px;
+      background-color: #8B0000;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5A0000;
+    }
+
+    .error {
+      color: #ff4d4d;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>SpartanX</h1>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Correo electrónico" required />
+    <input type="password" id="password" placeholder="Contraseña" required />
+    <button type="submit">Entrar</button>
+    <div class="error" id="errorMsg"></div>
+  </form>
+
+  <!-- SDKs de Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
+
+  <!-- Tu configuración personalizada -->
+  <script>
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyDgX7NuRv3X798mCGUZZnjnjIfCVDC69jI",
+      authDomain: "gymbook-b969b.firebaseapp.com",
+      projectId: "gymbook-b969b",
+      storageBucket: "gymbook-b969b.firebasestorage.app",
+      messagingSenderId: "224997498495",
+      appId: "1:224997498495:web:5bba26209914f8a19d294a",
+      measurementId: "G-C27VEVNK6R"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
+
+  <!-- Lógica de login -->
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorMsg = document.getElementById("errorMsg");
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = "homepage.html";
+        })
+        .catch(err => {
+          errorMsg.textContent = "Error: " + err.message;
+        });
+    });
+  </script>
+
+</body>
+</html>

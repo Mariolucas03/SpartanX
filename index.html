@@ -3,82 +3,185 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - SpartanX</title>
+  <title>Rutina - SpartanX</title>
   <style>
     body {
       margin: 0;
       font-family: "Poppins", sans-serif;
       background-color: #000;
       color: #fff;
+      padding-top: 65px;
+      padding-bottom: 80px;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #8B0000;
+      color: white;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
+      padding: 10px 15px;
+      z-index: 1000;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .titulo {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    main {
       padding: 20px;
     }
 
-    h1 {
+    h2 {
+      text-align: center;
       margin-bottom: 20px;
-      font-size: 28px;
-      color: #C9B037;
     }
 
     form {
       display: flex;
       flex-direction: column;
-      width: 100%;
-      max-width: 320px;
+      gap: 10px;
+      margin-bottom: 30px;
     }
 
-    input {
-      margin-bottom: 15px;
-      padding: 12px;
-      border-radius: 10px;
+    input, textarea, button {
+      padding: 10px;
+      border-radius: 8px;
       border: none;
       font-size: 16px;
     }
 
     button {
-      padding: 12px;
       background-color: #8B0000;
       color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
 
     button:hover {
       background-color: #5A0000;
     }
 
-    .error {
-      color: #ff4d4d;
-      margin-top: 10px;
+    .calendario-semana {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .calendario-semana button {
+      flex: 1;
+      margin: 5px;
+      padding: 10px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .calendario-semana button.entrenado {
+      background-color: #228B22;
+    }
+
+    .detalle-dia {
+      margin-top: 20px;
       text-align: center;
+      font-size: 16px;
+    }
+
+    nav {
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    nav a {
+      flex: 1;
+      margin: 0 8px;
+      background-color: #8B0000;
+      color: white;
+      text-align: center;
+      padding: 12px 0;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #5A0000;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 480px) {
+      .calendario-semana {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .calendario-semana button {
+        width: 80%;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>SpartanX</h1>
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="Correo electrónico" required />
-    <input type="password" id="password" placeholder="Contraseña" required />
-    <button type="submit">Entrar</button>
-    <div class="error" id="errorMsg"></div>
-  </form>
+  <!-- 🔝 CABECERA -->
+  <header>
+    <img src="logo.png" alt="Logo" class="logo" />
+    <h1 class="titulo">SpartanX</h1>
+  </header>
 
-  <!-- SDKs de Firebase -->
+  <!-- 📄 CONTENIDO -->
+  <main>
+    <h2>Registrar rutina de hoy</h2>
+    <form id="rutinaForm">
+      <input type="text" id="titulo" placeholder="Nombre de la rutina" required />
+      <input type="time" id="horaInicio" required />
+      <input type="text" id="duracion" placeholder="Duración (ej. 45 minutos)" required />
+      <textarea id="ejercicios" rows="4" placeholder="Ejercicios realizados separados por coma" required></textarea>
+      <button type="submit">Guardar rutina</button>
+    </form>
+
+    <h2>Semana actual</h2>
+    <div id="calendario" class="calendario-semana"></div>
+    <div id="detalleDia" class="detalle-dia"></div>
+  </main>
+
+  <!-- 🔘 BARRA INFERIOR -->
+  <nav>
+    <a href="rutina.html">Rutina</a>
+    <a href="comida.html">Comida</a>
+    <a href="ejercicios.html">Ejercicios</a>
+    <a href="historial.html">Historial</a>
+  </nav>
+
+  <!-- 🔗 Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
 
-  <!-- Tu configuración personalizada -->
+  <!-- 🔧 Configuración Firebase -->
   <script>
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
       apiKey: "AIzaSyDgX7NuRv3X798mCGUZZnjnjIfCVDC69jI",
       authDomain: "gymbook-b969b.firebaseapp.com",
@@ -94,23 +197,84 @@
     const db = firebase.firestore();
   </script>
 
-  <!-- Lógica de login -->
+  <!-- 🔐 Lógica de sesión + rutina + calendario -->
   <script>
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const errorMsg = document.getElementById("errorMsg");
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
 
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          window.location.href = "homepage.html";
-        })
-        .catch(err => {
-          errorMsg.textContent = "Error: " + err.message;
+      const uid = user.uid;
+      const form = document.getElementById("rutinaForm");
+      const calendario = document.getElementById("calendario");
+      const detalleDia = document.getElementById("detalleDia");
+
+      // Guardar rutina
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        const titulo = document.getElementById("titulo").value;
+        const horaInicio = document.getElementById("horaInicio").value;
+        const duracion = document.getElementById("duracion").value;
+        const ejercicios = document.getElementById("ejercicios").value.split(",").map(e => e.trim());
+        const fechaStr = new Date().toISOString().split("T")[0];
+
+        db.collection("usuarios").doc(uid).collection("entrenamientos").doc(fechaStr).set({
+          titulo,
+          horaInicio,
+          duracion,
+          ejercicios
+        }).then(() => {
+          alert("Rutina guardada correctamente");
+          form.reset();
+          generarCalendario();
         });
+      });
+
+      // Generar calendario semanal
+      function generarCalendario() {
+        calendario.innerHTML = "";
+        const hoy = new Date();
+        const lunes = new Date(hoy.setDate(hoy.getDate() - hoy.getDay() + 1));
+
+        for (let i = 0; i < 5; i++) {
+          const fecha = new Date(lunes);
+          fecha.setDate(lunes.getDate() + i);
+          const fechaStr = fecha.toISOString().split("T")[0];
+
+          const btn = document.createElement("button");
+          btn.textContent = fecha.toLocaleDateString("es-ES", { weekday: "short", day: "numeric" });
+
+          db.collection("usuarios").doc(uid).collection("entrenamientos").doc(fechaStr).get().then(doc => {
+            if (doc.exists) {
+              btn.classList.add("entrenado");
+            }
+          });
+
+          btn.addEventListener("click", () => {
+            db.collection("usuarios").doc(uid).collection("entrenamientos").doc(fechaStr).get().then(doc => {
+              if (doc.exists) {
+                const data = doc.data();
+                const ejercicios = data.ejercicios || [];
+                detalleDia.innerHTML = `
+                  <h3>${data.titulo}</h3>
+                  <p><strong>Hora de inicio:</strong> ${data.horaInicio || "No registrada"}</p>
+                  <p><strong>Duración                  <p><strong>Duración:</strong> ${data.duracion || "No registrada"}</p>
+                  <p><strong>Ejercicios realizados:</strong></p>
+                  <ul>${ejercicios.map(e => `<li>${e}</li>`).join("")}</ul>
+                `;
+              } else {
+                detalleDia.innerHTML = `<p>No hay ejercicios registrados para ese día.</p>`;
+              }
+            });
+          });
+
+          calendario.appendChild(btn);
+        }
+      }
+
+      generarCalendario();
     });
   </script>
-
 </body>
 </html>
