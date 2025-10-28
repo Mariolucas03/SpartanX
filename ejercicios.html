@@ -3,124 +3,328 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GymBook</title>
+  <title>Ejercicios - SpartanX</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
       font-family: "Poppins", sans-serif;
-      background-color: #f8f9fa;
-      color: #333;
-      overflow-x: hidden;
-      padding-top: 65px; /* espacio para la cabecera fija */
-      padding-bottom: 65px; /* espacio para la barra inferior fija */
+      background-color: #000;
+      color: #fff;
+      padding-top: 65px;
+      padding-bottom: 80px;
     }
 
-    /* === CABECERA FIJA === */
     header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background: white;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background: #8B0000;
+      color: white;
       display: flex;
       align-items: center;
-      justify-content: space-between;
       padding: 10px 15px;
       z-index: 1000;
     }
 
+    header a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+    }
+
     .logo {
-      width: 45px;
-      height: 45px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      object-fit: cover;
+      margin-right: 10px;
     }
 
     .titulo {
-      font-size: 20px;
-      font-weight: 700;
-      color: #333;
-      text-decoration: none;
-      text-align: center;
-      flex: 1;
+      font-size: 24px;
+      margin: 0;
     }
 
-    .perfil {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    /* === CONTENIDO CENTRAL === */
     main {
       padding: 20px;
-      text-align: center;
     }
 
-    /* === BARRA INFERIOR FIJA === */
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .grupo {
+      margin-bottom: 30px;
+      background: #111;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(255,255,255,0.1);
+    }
+
+    .grupo h3 {
+      color: #ffcccc;
+      border-bottom: 1px solid #444;
+      padding-bottom: 5px;
+      margin-top: 0;
+    }
+
+    .ejercicio {
+      margin: 10px 0;
+      padding: 10px;
+      background: #222;
+      border-radius: 5px;
+      position: relative;
+    }
+
+    .ejercicio strong {
+      display: block;
+      font-size: 1.1em;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+
+    .ejercicio em {
+      color: #ccc;
+    }
+
+    .btn-add {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #8B0000;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-add:hover {
+      background-color: #5A0000;
+    }
+
+    .rutina-menu {
+      margin-top: 10px;
+      background: #111;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .rutina-menu input,
+    .rutina-menu select {
+      width: 100%;
+      margin-top: 5px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    .rutina-menu button {
+      margin-top: 10px;
+      background-color: #8B0000;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     nav {
       position: fixed;
-      bottom: 0;
+      bottom: 10px;
       left: 0;
       width: 100%;
-      background: white;
-      border-top: 1px solid #ddd;
       display: flex;
       justify-content: space-around;
-      padding: 10px 0;
+      background: transparent;
       z-index: 1000;
     }
 
-    nav button {
-      background: none;
-      border: none;
-      font-size: 14px;
-      font-weight: 500;
-      color: #667eea;
-      cursor: pointer;
-      transition: transform 0.2s ease, color 0.3s ease;
+    nav a {
+      flex: 1;
+      margin: 0 8px;
+      background-color: #8B0000;
+      color: white;
+      text-align: center;
+      padding: 12px 0;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
     }
 
-    nav button:hover {
-      transform: scale(1.1);
-      color: #5563de;
-    }
-
-    @media (max-width: 480px) {
-      .titulo {
-        font-size: 18px;
-      }
+    nav a:hover {
+      background-color: #5A0000;
+      transform: translateY(-2px);
     }
   </style>
 </head>
 <body>
 
-  <!-- 🔝 CABECERA -->
   <header>
-    <a href="index.html"><img src="logo.png" alt="Logo" class="logo"></a>
-    <a href="index.html" class="titulo">GymBook</a>
-    <a href="perfil.html"><img src="perfil.png" alt="Perfil" class="perfil"></a>
+    <a href="homepage.html">
+      <img src="logo.png" alt="Logo" class="logo" />
+      <h1 class="titulo">SpartanX</h1>
+    </a>
   </header>
 
-  <!-- 📄 CONTENIDO PRINCIPAL -->
   <main>
-    <h2>Contenido de la sección</h2>
-    <p>Aquí irá el contenido específico de esta página.</p>
+    <h2>Ejercicios agrupados por músculo</h2>
+    <div id="contenedor"></div>
   </main>
 
-  <!-- 🔘 BARRA INFERIOR -->
   <nav>
-    <button onclick="location.href='rutina.html'">Rutina</button>
-    <button onclick="location.href='comida.html'">Comida</button>
-    <button onclick="location.href='ejercicios.html'">Ejercicios</button>
-    <button onclick="location.href='datos.html'">Datos</button>
+    <a href="rutina.html">Rutina</a>
+    <a href="comida.html">Comida</a>
+    <a href="ejercicios.html">Ejercicios</a>
+    <a href="historial.html">Historial</a>
   </nav>
 
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "gymbook-b969b.firebaseapp.com",
+      projectId: "gymbook-b969b",
+      storageBucket: "gymbook-b969b.appspot.com",
+      messagingSenderId: "123456789012",
+      appId: "1:123456789012:web:abcdef1234567890abcdef"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let rutinas = [];
+
+    function cargarRutinas() {
+      return db.collection("rutinas").get().then(snapshot => {
+        rutinas = [];
+        snapshot.forEach(doc => {
+          rutinas.push({ id: doc.id, ...doc.data() });
+        });
+      });
+    }
+
+    function crearRutina(nombre) {
+      return db.collection("rutinas").add({ nombre, ejercicios: [] }).then(doc => {
+        rutinas.push({ id: doc.id, nombre, ejercicios: [] });
+        return doc.id;
+      });
+    }
+
+    function asignarEjercicioARutina(rutinaId, ejercicio) {
+      db.collection("rutinas").doc(rutinaId).update({
+        ejercicios: firebase.firestore.FieldValue.arrayUnion({
+          nombre: ejercicio.nombre,
+          descripcion: ejercicio.descripcion
+        })
+      }).then(() => {
+        alert(`Ejercicio "${ejercicio.nombre}" añadido a la rutina`);
+      }).catch((error) => {
+        console.error("Error al asignar ejercicio:", error);
+      });
+    }
+
+    cargarRutinas().then(() => {
+      db.collection("ejercicios").get().then((querySnapshot) => {
+        const grupos = {};
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const musculo = data.musculo || "Otros";
+          if (!grupos[musculo]) grupos[musculo] = [];
+          grupos[musculo].push({ id: doc.id, ...data });
+        });
+
+        const contenedor = document.getElementById("contenedor");
+
+        Object.keys(grupos).forEach((musculo) => {
+          const grupoDiv = document.createElement("div");
+          grupoDiv.className = "grupo";
+          const titulo = document.createElement("h3");
+          titulo.textContent = musculo;
+          grupoDiv.appendChild(titulo);
+
+          grupos[musculo].forEach((ejercicio) => {
+            const ejercicioDiv = document.createElement("div");
+            ejercicioDiv.className = "ejercicio";
+            ejercicioDiv.innerHTML = `<strong>${ejercicio.nombre}</strong><em>${ejercicio.descripcion}</em>`;
+
+            const boton = document.createElement("button");
+            boton.textContent = "+";
+            boton.className = "btn-add";
+            boton.onclick = () => mostrarMenuRutina(ejercicio, ejercicioDiv);
+            ejercicioDiv.appendChild(boton);
+
+            grupoDiv.appendChild(ejercicioDiv);
+          });
+
+          contenedor.appendChild(grupoDiv);
+        });
+      });
+    });
+
+    function mostrarMenuRutina(ejercicio, ejercicioDiv) {
+      const menu = document.createElement("div");
+      menu.className = "rutina-menu";
+
+      const input = document.createElement("input");
+      input.placeholder = "Nombre de nueva rutina";
+
+      const select = document.createElement("select");
+      rutinas.forEach(r => {
+        const option = document.createElement("option");
+        option.value = r.id;
+        option.textContent = r.nombre;
+        select.appendChild(option);
+      });
+
+      const btnCrear = document.createElement("button");
+      btnCrear.textContent = "Añadir rutina";
+      btnCrear.onclick = async () => {
+        const nombre = input.value.trim();
+        if (nombre) {
+          const nuevaId = await crearRutina(nombre);
+          const option = document.createElement("option");
+          option.value = nuevaId;
+          option.textContent =          option.textContent = nombre;
+          select.appendChild(option);
+          select.value = nuevaId;
+          input.value = "";
+        }
+      };
+
+      const btnAsignar = document.createElement("button");
+      btnAsignar.textContent = "Asignar a rutina";
+      btnAsignar.onclick = () => {
+        const rutinaId = select.value;
+        if (rutinaId) {
+          asignarEjercicioARutina(rutinaId, {
+            nombre: ejercicio.nombre,
+            descripcion: ejercicio.descripcion
+          });
+          menu.remove();
+        }
+      };
+
+      menu.appendChild(input);
+      menu.appendChild(btnCrear);
+      menu.appendChild(select);
+      menu.appendChild(btnAsignar);
+
+      const anterior = ejercicioDiv.querySelector(".rutina-menu");
+      if (anterior) anterior.remove();
+
+      ejercicioDiv.appendChild(menu);
+    }
+  </script>
 </body>
 </html>
